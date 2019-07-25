@@ -18,6 +18,7 @@ int main(void) {
 	double a = 0, b = 0;
 	int Element_count = 0;
 	int number = 1;
+	int number2 = 1;
 	double* x;     //数値x
 	double* y;     //数値y
 	double* x_Covariance;     //数値x　偏差
@@ -131,11 +132,12 @@ int main(void) {
 
 	b = y_average - a * x_average;
 
-	ofstream date_file("Least-squares-method.cvs");
+	ofstream date_file("Least-squares-method.csv");
 
 	for (int i = 0; i < Element_count; i++) {
 
-		date_file << x[i] << "," << y[i] << endl;
+		date_file << "x" << number2 << "," << x[i] << "," << "y" << number2 << "," << y[i] << endl;
+		number2++;
 	}
 	date_file.close();
 
