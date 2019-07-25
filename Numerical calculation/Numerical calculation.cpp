@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <iomanip>
+#include<fstream>
 #include <math.h>
 
 using namespace std;
@@ -59,7 +60,7 @@ int main(void) {
 	cout << "Please enter two values" << endl;
 
 	for (int i = 0; i < Element_count; i++) {
-		i;
+		
 		while (1) {
 
 			cout << number << " point  x：";
@@ -93,6 +94,7 @@ int main(void) {
 
 		x_total += x[i];     //xの合計
 		y_total += y[i];     //yの合計
+
 
 	}
 
@@ -128,6 +130,14 @@ int main(void) {
 	a = Covariance / x_dispersion;     //傾き
 
 	b = y_average - a * x_average;
+
+	ofstream date_file("Least-squares-method.cvs");
+
+	for (int i = 0; i < Element_count; i++) {
+
+		date_file << x[i] << "," << y[i] << endl;
+	}
+	date_file.close();
 
 	printf("Regression line ： y = %.2f x + %.2f\n", a, b);
 
