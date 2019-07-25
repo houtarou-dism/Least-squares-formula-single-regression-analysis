@@ -131,5 +131,11 @@ int main(void) {
 
 	printf("Regression line ÅF y = %.2f x + %.2f\n", a, b);
 
+	delete[] x;
+	delete[] y;
+	delete[] x_Covariance;
+	delete[] y_Covariance;
+	delete[] Covariance_product;
+
 	return 0;
 }
