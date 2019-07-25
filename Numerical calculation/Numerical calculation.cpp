@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <iostream>
+#include <iomanip>
 #include <math.h>
 
 using namespace std;
@@ -13,12 +14,14 @@ void deviation(double* a, double* b, double* x, double* y) {     //&x[i], &y[i],
 
 int main(void) {
 
+	double a = 0, b = 0;
 	int Element_count = 0;
-	double x[100] = { 0 };     //数値x
-	double y[100] = { 0 };    //数値y
-	double x_Covariance[100] = { 0 };     //数値x　偏差
-	double y_Covariance[100] = { 0 };     //数値y　偏差
-	double Covariance_product[100] = { 0 };     //偏差の積
+	int number = 1;
+	double* x;     //数値x
+	double* y;     //数値y
+	double* x_Covariance;     //数値x　偏差
+	double* y_Covariance;     //数値y　偏差
+	double* Covariance_product;     //偏差の積
 	double Covariance_total = 0;     //偏差の合計
 	double Covariance = 0;     //偏差
 	double x_total = 0;     //xの合計
@@ -34,32 +37,33 @@ int main(void) {
 
 	while (1) {
 
-		cout << "Please enter the number of data less than 100： " << flush;
+		cout << "Please enter the number of data to enter ： " << flush;
 
 		if (!(cin >> Element_count)) {
-
 			cout << "Input more than significant digits or non-numeric input" << endl;
 			cin.clear();   //エラー状態をクリア
 			cin.ignore(1024, '\n');   //内部バッファのデータを破棄
 			continue;   //繰り返し
-		}
-
-		if (Element_count > 100) {
-
-			cout << "A number greater than 100 has been entered" << endl;
 		}
 		cin.ignore(1024, '\n');
 		break;
 	}
 
 
+	x = new double[Element_count];
+	y = new double[Element_count];
+	x_Covariance = new double[Element_count];
+	y_Covariance = new double[Element_count];
+	Covariance_product = new double[Element_count];
+
 	cout << "Please enter two values" << endl;
 
-	for (int i = 1; i <= Element_count; i++) {
-
+	for (int i = 0; i < Element_count; i++) {
+		i;
 		while (1) {
 
-			cout << i << " point  x：";
+			cout << number << " point  x：";
+			number++;
 
 			if (!(cin >> x[i])) {
 				cout << "Input more than significant digits or non-numeric input" << endl;
@@ -96,40 +100,36 @@ int main(void) {
 	y_average = y_total / Element_count;
 
 
-	for (int i = 1; i <= Element_count; i++) {
+	for (int i = 0; i < Element_count; i++) {
 
 		deviation(&x_Covariance[i], &y_Covariance[i], &x_average, &y_average);     //x, y 偏差
 
-		x_Total_deviation += pow(x[i], 2.0);     //x, y 偏差二乗合計
+		x_Total_deviation += pow(x_Covariance[i], 2.0);     //x, y 偏差二乗合計
 		y_Total_deviation += pow(y[i], 2.0);
 
 	}
 
+	x_Total_deviation;
 	x_dispersion = (x_Total_deviation / Element_count);     //x, y 分散
 	y_dispersion = (y_Total_deviation / Element_count);
 
 	x_standard_deviation = sqrt(x_dispersion);     //x, y 標準偏差
 	y_standard_deviation = sqrt(y_dispersion);
 
-	for (int i = 1; i <= Element_count; i++) {
+	for (int i = 0; i < Element_count; i++) {
 
 		Covariance_product[i] = x_Covariance[i] * y_Covariance[i];
 		Covariance_total += Covariance_product[i];
 	}
 
-	Covariance = Covariance_total / Element_count;
-
-	for (int i = 1; i <= Element_count; i++) {
-
-		printf("%lf", x[i]);
-		printf("\n");
-		printf("%lf", y[i]);
-		printf("\n");
-
-	}
+	Covariance = Covariance_total / Element_count;     //共分散
 
 
+	a = Covariance / x_dispersion;     //傾き
 
+	b = y_average - a * x_average;
+
+	printf("Regression line ： y = %.2f x + %.2f\n", a, b);
 
 	return 0;
 }
