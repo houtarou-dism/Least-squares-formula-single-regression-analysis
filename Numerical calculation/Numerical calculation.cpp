@@ -7,8 +7,7 @@
 
 using namespace std;
 
-void deviation(double* a, double* b, double* x, double* y) {     //&x[i], &y[i], &x_average, &y_average, &Element_count
-
+void deviation(double* a, double* b, double* x, double* y) {     //&x[i], &y[i], &x_average, &y_average
 	*a -= *x;
 	*b -= *y;
 }
