@@ -1,8 +1,9 @@
 #include <cstdio>
 #include <iostream>
 #include <iomanip>
-#include<fstream>
+#include <fstream>
 #include <math.h>
+
 
 using namespace std;
 
@@ -15,10 +16,12 @@ void deviation(double* a, double* b, double* x, double* y) {     //&x[i], &y[i],
 
 int main(void) {
 
-	double a = 0, b = 0;
+	const int max = 1000;
+
+	double a = 0;
+	double b = 0;
 	int Element_count = 0;
 	int number = 1;
-	int number2 = 1;
 	double* x;     //数値x
 	double* y;     //数値y
 	double* x_Covariance;     //数値x　偏差
@@ -40,18 +43,27 @@ int main(void) {
 	while (1) {
 
 		cout << "Please enter the number of data to enter ： " << flush;
+		cin >> Element_count;
 
-		if (!(cin >> Element_count)) {
-			cout << "Input more than significant digits or non-numeric input" << endl;
+		if(!(Element_count)) {
+
+			cout << "Invalid input(Non-numeric or 0 input)" << endl;
 			cin.clear();   //エラー状態をクリア
 			cin.ignore(1024, '\n');   //内部バッファのデータを破棄
 			continue;   //繰り返し
 		}
+		else if (Element_count < 0) {
+		
+			cout << "Invalid input(Negative input)" << endl;
+			cin.clear();   //エラー状態をクリア
+			cin.ignore(1024, '\n');   //内部バッファのデータを破棄
+			continue;
+		}
+
 		cin.ignore(1024, '\n');
 		break;
 	}
-
-
+	
 	x = new double[Element_count];
 	y = new double[Element_count];
 	x_Covariance = new double[Element_count];
@@ -96,12 +108,10 @@ int main(void) {
 		x_total += x[i];     //xの合計
 		y_total += y[i];     //yの合計
 
-
 	}
 
 	x_average = x_total / Element_count;     //x, yの平均
 	y_average = y_total / Element_count;
-
 
 	for (int i = 0; i < Element_count; i++) {
 
@@ -112,7 +122,6 @@ int main(void) {
 
 	}
 
-	x_Total_deviation;
 	x_dispersion = (x_Total_deviation / Element_count);     //x, y 分散
 	y_dispersion = (y_Total_deviation / Element_count);
 
@@ -127,21 +136,43 @@ int main(void) {
 
 	Covariance = Covariance_total / Element_count;     //共分散
 
-
 	a = Covariance / x_dispersion;     //傾き
 
-	b = y_average - a * x_average;
+	b = y_average - a * x_average;     //切片
 
-	ofstream date_file("Least-squares-method.csv");
+	ofstream date_file("Least-squares-method.csv");     //ファイル書き込み
+
+	if (b < 0) {
+
+		date_file << "y = " << a << " x - " << b * (-1) << endl;
+	}
+	else {
+
+		date_file << "y = " << a << " x + " << b << endl;
+	}
+	
+	date_file << endl;
+	date_file << endl;
+	date_file << endl;
+	date_file << "x" << "," << "y" << endl;
 
 	for (int i = 0; i < Element_count; i++) {
 
-		date_file << "x" << number2 << "," << x[i] << "," << "y" << number2 << "," << y[i] << endl;
-		number2++;
+		date_file << x[i] << "," << y[i] << endl;
+		
 	}
 	date_file.close();
 
-	printf("Regression line ： y = %.2f x + %.2f\n", a, b);
+	cout << endl;
+
+	if (b < 0) {
+
+		printf("Regression line ： y = %.2f x - %.2f\n", a, b * (-1));
+	}
+	else {
+
+		printf("Regression line ： y = %.2f x + %.2f\n", a, b);
+	}
 
 	delete[] x;
 	delete[] y;
