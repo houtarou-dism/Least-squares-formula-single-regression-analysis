@@ -45,12 +45,19 @@ int main(void) {
 		cout << "Please enter the number of data to enter ： " << flush;
 		cin >> Element_count;
 
-		if(!(Element_count)) {
+		if(!(cin)) {
 
-			cout << "Invalid input(Non-numeric or 0 input)" << endl;
+			cout << "Invalid input (non-numeric or 0 input or out of range)" << endl;
 			cin.clear();   //エラー状態をクリア
 			cin.ignore(1024, '\n');   //内部バッファのデータを破棄
 			continue;   //繰り返し
+		}
+		else if(Element_count == 0){
+
+			cout << "Input of 0" << endl;
+			cin.clear();   //エラー状態をクリア
+			cin.ignore(1024, '\n');   //内部バッファのデータを破棄
+			continue;
 		}
 		else if (Element_count < 0) {
 		
